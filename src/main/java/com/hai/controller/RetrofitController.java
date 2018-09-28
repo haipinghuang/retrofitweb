@@ -1,10 +1,9 @@
 package com.hai.controller;
 
-import com.alibaba.fastjson.JSON;
+import com.hai.base.BaseController;
 import com.hai.bean.BaseResponse;
 import com.hai.bean.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +18,7 @@ import static com.hai.bean.BaseResponse.CODE_SUCCESS;
  * Created by 黄海 on 2017/4/10.
  */
 @RestController
-public class RetrofitController {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+public class RetrofitController extends BaseController {
 
     @RequestMapping("getUser")
     public User getUser() {
@@ -31,6 +29,22 @@ public class RetrofitController {
             e.printStackTrace();
         }
         return new User("huang", "hai");
+    }
+
+    /**
+     * 服务延迟delaySec秒返回结果
+     *
+     * @return
+     */
+    @RequestMapping("getDelay/{delaySec}")
+    public String getDelay(@PathVariable(name = "delaySec") int delaySec) {
+        logger.info("getDelay() called with: delaySec=" + delaySec);
+        try {
+            TimeUnit.SECONDS.sleep(delaySec);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "the server returns after " + delaySec + " second";
     }
 
     @RequestMapping("getValidatedUser")

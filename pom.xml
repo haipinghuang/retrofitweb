@@ -110,7 +110,7 @@
                 <version>2.1</version>
                 <configuration>
                     <port>8080</port>
-                    <path>/</path>
+                    <path>/retrofitweb</path>
                     <uriEncoding>UTF-8</uriEncoding>
                     <server>tomcat7</server>
                 </configuration>
