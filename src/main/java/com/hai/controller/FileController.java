@@ -33,6 +33,12 @@ public class FileController {
         return s;
     }
 
+    /**
+     * 上传文件到 F:/fileUpload
+     *
+     * @param file
+     * @return
+     */
     @RequestMapping("uploadFile")
     @ResponseBody
     private String filesUpload(CommonsMultipartFile file) {
