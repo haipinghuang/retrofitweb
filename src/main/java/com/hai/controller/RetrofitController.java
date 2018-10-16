@@ -32,9 +32,19 @@ public class RetrofitController extends BaseController {
     }
 
     /**
-     * 服务延迟delaySec秒返回结果
+     * 直接返回一段字符串
      *
      * @return
+     */
+    @RequestMapping("getAString")
+    public String getAString() {
+        return "a string msg just from server directily";
+    }
+
+    /**
+     * 服务延迟delaySec秒返回结果
+     *
+     * @return String
      */
     @RequestMapping("getDelay/{delaySec}")
     public String getDelay(@PathVariable(name = "delaySec") int delaySec) {

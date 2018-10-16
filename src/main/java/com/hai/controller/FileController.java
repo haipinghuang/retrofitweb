@@ -1,5 +1,6 @@
 package com.hai.controller;
 
+import com.hai.base.BaseController;
 import com.hai.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -20,16 +21,22 @@ import java.util.Date;
  * Created by 黄海 on 2017/4/10.
  */
 @Controller
-public class FileController {
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+public class FileController extends BaseController {
+    private static final String PATH_UPLOAD = "E:\\download\\upload_test\\";
 
-    //解决中文乱码
-    @RequestMapping(value = "uploadFileWithName", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    /**
+     * 文件下载
+     *
+     * @param file
+     * @param name
+     * @return String
+     */
+    @RequestMapping(value = "uploadFileWithName", method = RequestMethod.POST, produces = "application/json;charset=UTF-8" /*produces：解决中文乱码*/)
     @ResponseBody
-    private String uploadFileWithUsername(@RequestParam("file") CommonsMultipartFile file, @RequestParam("name") String name) {
+    private String uploadFileWithName(@RequestParam("file") CommonsMultipartFile file, @RequestParam(value = "name", required = false) String name) {
         System.out.println("recevied file name=" + file.getOriginalFilename() + ",file length=" + file.getSize() + ",and name=" + name);
         String s = filesUpload(file);
-        System.out.println("文件上传：" + s);
+        logger.info("文件上传：" + s);
         return s;
     }
 
@@ -37,15 +44,14 @@ public class FileController {
      * 上传文件到 F:/fileUpload
      *
      * @param file
-     * @return
+     * @return String
      */
     @RequestMapping("uploadFile")
     @ResponseBody
     private String filesUpload(CommonsMultipartFile file) {
         if (file != null && !file.isEmpty()) {
-            System.out.println("recevied file name=" + file.getOriginalFilename() + ",file length=" + file.getSize());
-            String path = "F:/fileUpload";
-            File destFile = new File(path, new Date().getTime() + file.getOriginalFilename());
+            logger.info("recevied file name=" + file.getOriginalFilename() + ",file length=" + file.getSize());
+            File destFile = new File(PATH_UPLOAD, new Date().getTime() + file.getOriginalFilename());
             if (!destFile.getParentFile().exists()) destFile.getParentFile().mkdir();
             try {
                 file.transferTo(destFile);
@@ -59,10 +65,16 @@ public class FileController {
         return "file is null";
     }
 
+    /**
+     * 文件下载
+     *
+     * @param fileNmae
+     * @return ResponseEntity
+     */
     @RequestMapping("downloadFile")
     private ResponseEntity<byte[]> download(@RequestParam("fileName") String fileNmae) {
         if (!StringUtils.isEmpty(fileNmae)) {
-            File file = new File("F:\\fileUpload\\" + fileNmae);
+            File file = new File(PATH_UPLOAD, fileNmae);
             if (file.exists() && file.length() > 0) {
                 logger.info(file.getName() + "文件大小=" + file.length());
                 HttpHeaders httpHeaders = new HttpHeaders();
