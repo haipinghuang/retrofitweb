@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * Created by 黄海 on 2017/4/10.
+ * 文件上传下载服务类
+ * Created by huanghp on 2018/10/31.
+ * Email h1132760021@sina.com
  */
 @Controller
 public class FileController extends BaseController {
@@ -33,7 +35,7 @@ public class FileController extends BaseController {
      */
     @RequestMapping(value = "uploadFileWithName", method = RequestMethod.POST, produces = "application/json;charset=UTF-8" /*produces：解决中文乱码*/)
     @ResponseBody
-    private String uploadFileWithName(@RequestParam("file") CommonsMultipartFile file, @RequestParam(value = "name", required = false) String name) {
+    private String uploadFileWithName(@RequestParam(value = "file") CommonsMultipartFile file, @RequestParam(value = "name", required = false) String name) {
         System.out.println("recevied file name=" + file.getOriginalFilename() + ",file length=" + file.getSize() + ",and name=" + name);
         String s = filesUpload(file);
         logger.info("文件上传：" + s);
@@ -76,7 +78,7 @@ public class FileController extends BaseController {
         if (!StringUtils.isEmpty(fileNmae)) {
             File file = new File(PATH_UPLOAD, fileNmae);
             if (file.exists() && file.length() > 0) {
-                logger.info(file.getName() + "文件大小=" + file.length());
+                logger.info("服务器准备下载服务：" + file.getName() + "文件大小=" + file.length());
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 httpHeaders.setContentDispositionFormData("attachment", file.getAbsolutePath());
