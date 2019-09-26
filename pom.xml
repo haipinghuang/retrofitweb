@@ -112,10 +112,16 @@
                     <port>8080</port>
                     <path>/retrofitweb</path>
                     <uriEncoding>UTF-8</uriEncoding>
-                    <server>tomcat7</server>
+                    <server>tomcat9</server>
                 </configuration>
             </plugin>
         </plugins>
 
     </build>
+    <!--解决编辑报错-->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>12</maven.compiler.source>
+        <maven.compiler.target>12</maven.compiler.target>
+    </properties>
 </project>
